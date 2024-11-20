@@ -45,6 +45,10 @@ provider:
 functions:
   register:
     handler: ./exports/registerUser.handler
+    events:
+      - http:
+          method: post
+          path: /auth/register
 
 # Custom Vars
 custom:
