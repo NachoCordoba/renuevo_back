@@ -16,8 +16,8 @@
     "typeRoots": ["node_modules/@types"],
     "baseUrl": "./src",
     "paths": {
-      "@/user": ["./modules/user/*"],
-      "@/shared": ["./shared"]
+      "@/user/*": ["./modules/user/*"],
+      "@/shared/*": ["./shared/*"]
     }
   },
   "include": ["src/**/*.ts"],
