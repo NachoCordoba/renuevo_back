@@ -1,0 +1,76 @@
+service: user
+frameworkVersion: 4.4.x
+
+provider:
+  name: aws
+  runtime: nodejs22.x
+  region: sa-east-1
+
+  # Lambda Configs
+  memorySize: 512
+  architecture: arm64
+
+  # Logs Configs
+  logRetentionInDays: 1
+
+  # IAM Roles Lambda Execution
+  iam:
+    deploymentRole: ${param:cfExecutionRole}
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:GetItem
+            - dynamodb:Query
+          Resource:
+            - !GetAtt UserTable.Arn
+            - Fn::Join:
+                - "/"
+                - - !GetAtt UserTable.Arn
+                  - "index/EmailIndex"
+
+  # ApiGateway
+  apiGateway:
+    restApiId:
+      Fn::ImportValue: SharedApiGatewayId
+    restApiRootResourceId:
+      Fn::ImportValue: SharedApiGatewayRootResourceId
+
+  # Env vars
+  environment:
+    USER_TABLE: ${self:custom.userTableName}
+
+# Lambda Functions
+functions:
+  register:
+    handler: ./exports/registerUser.handler
+
+# Custom Vars
+custom:
+  userTableName: ${sls:stage}-user
+
+# Resources
+resources:
+  Resources:
+    ## Tabla de usuarios
+    UserTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.userTableName}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: EmailIndex
+            KeySchema:
+              - AttributeName: email
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL

@@ -1,0 +1,34 @@
+service: shared-infrastructure
+
+provider:
+  name: aws
+  runtime: nodejs22.x
+  region: sa-east-1
+
+  # IAM Roles Lambda Execution
+  iam:
+    deploymentRole: ${param:cfExecutionRole}
+
+resources:
+  Resources:
+    ApiGateway:
+      Type: AWS::ApiGateway::RestApi
+      Properties:
+        Name: SharedApiGateway
+
+    ApiGatewayRootResource:
+      Type: AWS::ApiGateway::Resource
+      Properties:
+        ParentId: !GetAtt ApiGateway.RootResourceId
+        PathPart: root
+        RestApiId: !Ref ApiGateway
+
+  Outputs:
+    ApiGatewayId:
+      Value: !Ref ApiGateway
+      Export:
+        Name: SharedApiGatewayId
+    ApiGatewayRootResourceId:
+      Value: !GetAtt ApiGateway.RootResourceId
+      Export:
+        Name: SharedApiGatewayRootResourceId
