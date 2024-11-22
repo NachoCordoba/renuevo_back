@@ -29,30 +29,24 @@ provider:
                 - "/"
                 - - !GetAtt UserTable.Arn
                   - "index/EmailIndex"
-
-  # ApiGateway
-  apiGateway:
-    restApiId:
-      Fn::ImportValue: SharedApiGatewayId
-    restApiRootResourceId:
-      Fn::ImportValue: SharedApiGatewayRootResourceId
-
-  # Env vars
+    # Env vars
   environment:
     USER_TABLE: ${self:custom.userTableName}
 
 # Lambda Functions
 functions:
   register:
-    handler: ./exports/registerUser.handler
-    events:
-      - http:
-          method: post
-          path: /auth/register
+    handler: ./register_user_function.handler
 
 # Custom Vars
 custom:
   userTableName: ${sls:stage}-user
+
+build:
+  esbuild:
+    external:
+      - "argon2"
+      - "@aws-sdk/*"
 
 # Resources
 resources:

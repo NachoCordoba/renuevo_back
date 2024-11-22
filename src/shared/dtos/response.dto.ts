@@ -1,47 +1,52 @@
-import { HttpStatus } from "../enums/http_status.enum";
+import { HttpStatus } from "../enum/http_status.enum";
 import { ExceptionDTO } from "./exception.dto";
 
-type Data<T> = {
-  type: string;
+type Exception = ExceptionDTO;
+
+type Errors = Array<Exception>;
+
+type Data<Attributes> = {
   id: string;
-  attributes: Omit<T, "id">;
+  attributes: Attributes;
+  type: string;
 };
 
-type Body<T> = {
-  data: Data<T> | Array<Data<T>> | {};
-  errors: Array<ExceptionDTO>;
+type Body<Attributes> = {
+  data: Data<Attributes> | Array<Data<Attributes>> | {};
+  errors: Errors;
 };
 
-interface IResponse<T> {
-  statusCode: HttpStatus;
-  body: Body<T>;
-  headers?: Record<string, string>;
-}
+export class ResponseDTO<Attributes> {
+  private status: HttpStatus;
+  private body: Body<Attributes>;
 
-export class ResponseDTO<T> {
-  private statusCode: HttpStatus;
-  private body: Body<T>;
-  private headers: Record<string, string>;
-
-  constructor(res: IResponse<T>) {
-    this.statusCode = res.statusCode;
-    this.body = res.body;
-    this.headers = res.headers || {};
+  constructor() {
+    this.body = {
+      data: {},
+      errors: [],
+    };
+    this.status = HttpStatus.ACCEPTED;
   }
 
-  getStatusCode(): HttpStatus {
-    return this.statusCode;
+  setData(
+    data: Data<Attributes> | Array<Data<Attributes>>
+  ): ResponseDTO<Attributes> {
+    this.body.data = data;
+    return this;
   }
 
-  getBody(): Body<T> {
-    return this.body;
+  setErrors(errors: Errors): ResponseDTO<Attributes> {
+    this.body.errors = errors;
+    return this;
   }
 
-  getBodyString(): string {
-    return JSON.stringify(this.body);
+  setStatus(status: HttpStatus): ResponseDTO<Attributes> {
+    this.status = status;
+    return this;
   }
 
-  getHeaders(): Record<string, string> {
-    return this.headers;
+  addError(error: Exception): ResponseDTO<Attributes> {
+    this.body.errors.push(error);
+    return this;
   }
 }

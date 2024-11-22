@@ -4,8 +4,6 @@ services:
     params:
       cfExecutionRole: ${env:CF_EXECUTION_ROLE}
   users:
-    path: ./src/modules/user
+    path: ./src/modules/user/exports
     params:
       cfExecutionRole: ${env:CF_EXECUTION_ROLE}
-    dependsOn:
-      - shared-infrastructure

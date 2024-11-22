@@ -1,15 +1,7 @@
-import { randomUUID } from "node:crypto";
-
-type CustomUUIDGenerator = () => string;
-
 export class UUID {
-  constructor(private _id: string) {}
+  constructor(private _uuid: string) {}
 
-  static generate(customUUIDGenerator: CustomUUIDGenerator = randomUUID): UUID {
-    return new UUID(customUUIDGenerator());
-  }
-
-  getId(): string {
-    return this._id;
+  get value(): string {
+    return this._uuid;
   }
 }

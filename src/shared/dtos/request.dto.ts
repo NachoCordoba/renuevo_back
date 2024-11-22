@@ -1,50 +1,25 @@
-interface IRequest<T> {
-  path: string;
-  method: string;
-  headers: Record<string, string | undefined>;
-  body: string | T | null;
-  queryParams: Record<string, string | undefined> | null;
-  pathParams: Record<string, string | undefined> | null;
-}
+import { EmptyException } from "../exceptions/empty.exception";
 
+export type IRequest<T> = {
+  body: T;
+};
 export class RequestDTO<T> {
-  private path: string;
-  private method: string;
-  private headers: Record<string, string | undefined>;
-  private body: T;
-  private queryParams: Record<string, string | undefined>;
-  private pathParams: Record<string, string | undefined>;
+  private readonly body: T;
 
   constructor(req: IRequest<T>) {
-    this.path = req.path;
-    this.method = req.method;
-    this.headers = req.headers;
-    this.body = typeof req.body === "string" ? JSON.parse(req.body) : req.body;
-    this.queryParams = req.queryParams || {};
-    this.pathParams = req.pathParams || {};
+    this.body = req.body;
   }
 
-  getPath(): string {
-    return this.path;
-  }
-
-  getMethod(): string {
-    return this.method;
-  }
-
-  getHeaders(): Record<string, string | undefined> {
-    return this.headers;
+  validateEmptyBody(): RequestDTO<T> {
+    if (!this.body) throw new EmptyException("", "body");
+    return this;
   }
 
   getBody(): T {
     return this.body;
   }
 
-  getQueryParams(): Record<string, string | undefined> {
-    return this.queryParams;
-  }
-
-  getPathParams(): Record<string, string | undefined> {
-    return this.pathParams;
+  static fromLambdaEvent<T>(event: IRequest<T>): RequestDTO<T> {
+    return new RequestDTO(event);
   }
 }

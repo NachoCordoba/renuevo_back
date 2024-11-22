@@ -1,24 +1,26 @@
-import { ExceptionDTO } from "shared/dtos/exception.dto";
+import { ValidationDTO } from "../dtos/validation.dto";
+import { HttpStatus } from "../enum/http_status.enum";
 import { Exception } from "./exception";
-import { HttpStatus } from "shared/enums/http_status.enum";
 
-export type ValidationProps = {
-  property: string;
-  type: "header" | "parameter" | "pointer";
-  constraint: string;
-};
+export abstract class ValidationException extends Exception {
+  public readonly status: HttpStatus = HttpStatus.BAD_REQUEST;
+  public readonly property: string;
+  public readonly constraint: string;
+  public readonly value: string;
 
-export class ValidationException extends Exception {
-  constructor(detail: ValidationProps) {
-    const validationException = new ExceptionDTO({
-      title: "ValidationException",
-      code: "validation_exception",
-      detail: detail.constraint,
-      status: HttpStatus.BAD_REQUEST,
-      source: {
-        [detail.type]: detail.property,
-      },
-    });
-    super(validationException);
+  constructor(validationDTO: ValidationDTO) {
+    super(validationDTO);
+    this.property = validationDTO.property;
+    this.constraint = validationDTO.constraint;
+    this.value = validationDTO.value;
+  }
+
+  toJson() {
+    return {
+      code: this.code,
+      message: this.message,
+      property: this.property,
+      value: this.value,
+    };
   }
 }
