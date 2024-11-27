@@ -20,6 +20,7 @@ export class RegisterUserLambdaAdapter
   constructor(private readonly _dependencies: RegisterUserLambdaDependencies) {}
 
   async handle(event: IRequest<CreateUserDTO>): Promise<ResponseDTO<UserDTO>> {
+    const response = new ResponseDTO();
     try {
       const createUserDTO: CreateUserDTO = new CreateUserDTO(
         RequestDTO.fromLambdaEvent(event).validateEmptyBody().getBody()
@@ -27,7 +28,7 @@ export class RegisterUserLambdaAdapter
       const { id, ...attributes } = await this._dependencies.useCase.execute(
         createUserDTO
       );
-      return new ResponseDTO()
+      return response
         .setData({
           type: "user",
           id: id,
@@ -36,11 +37,9 @@ export class RegisterUserLambdaAdapter
         .setStatus(HttpStatus.CREATED);
     } catch (err: Exception | unknown) {
       if (err instanceof Exception)
-        return new ResponseDTO().addError(err).setStatus(err.status);
-
-      console.log(err);
+        return response.addError(err).setStatus(err.status);
       const unexpectedException = new UnexpectedException(err as Error);
-      return new ResponseDTO()
+      return response
         .addError(unexpectedException)
         .setStatus(unexpectedException.status);
     }

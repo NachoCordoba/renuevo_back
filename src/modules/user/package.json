@@ -1,0 +1,16 @@
+{
+  "name": "user",
+  "version": "0.0.1",
+  "description": "User Module - Renuevo",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ignacio A. Cordoba",
+  "license": "MIT",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.693.0",
+    "@aws-sdk/util-dynamodb": "^3.693.0",
+    "argon2": "^0.41.1"
+  }
+}

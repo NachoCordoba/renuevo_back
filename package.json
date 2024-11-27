@@ -17,10 +17,6 @@
     "url": "https://github.com/NachoCordoba/renuevo_back/issues"
   },
   "homepage": "https://github.com/NachoCordoba/renuevo_back#readme",
-  "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.693.0",
-    "@aws-sdk/util-dynamodb": "^3.693.0"
-  },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.145",
     "@types/jest": "^29.5.14",

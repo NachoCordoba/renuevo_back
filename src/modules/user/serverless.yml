@@ -36,7 +36,7 @@ provider:
 # Lambda Functions
 functions:
   register:
-    handler: ./register_user_function.handler
+    handler: ./functions/register_user_function.handler
 
 # Custom Vars
 custom:

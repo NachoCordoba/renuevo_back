@@ -4,6 +4,6 @@ services:
     params:
       cfExecutionRole: ${env:CF_EXECUTION_ROLE}
   users:
-    path: ./src/modules/user/exports
+    path: ./src/modules/user
     params:
       cfExecutionRole: ${env:CF_EXECUTION_ROLE}

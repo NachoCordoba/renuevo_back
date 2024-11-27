@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.693.0",
-    "@aws-sdk/util-dynamodb": "^3.693.0",
-    "argon2": "^0.41.1"
-  }
-}
