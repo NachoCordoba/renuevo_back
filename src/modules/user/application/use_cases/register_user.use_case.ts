@@ -1,8 +1,8 @@
 import { IUseCase } from "@/shared/interfaces/use_case.interface";
 import { CreateUserDTO } from "../dtos/create_user.dto";
 import { UserDTO } from "../dtos/user.dto";
-import { FindUserByEmailPort } from "@/user/infrastructure/ports/find_user_by_email.port";
-import { SaveUserPort } from "@/user/infrastructure/ports/save_user.port";
+import { FindUserByEmailPort } from "@/user/infrastructure/db/ports/find_user_by_email.port";
+import { SaveUserPort } from "@/user/infrastructure/db/ports/save_user.port";
 import { RegisteredEmailException } from "../exceptions/registered_email.exception";
 import { IHashService } from "@/shared/interfaces/hash_service.interface";
 import { UserFactory } from "@/user/domain/factories/user.factory";

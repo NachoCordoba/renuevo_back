@@ -1,6 +1,5 @@
 import { Email } from "../value_objects/email.vo";
 import { Password } from "../value_objects/password.vo";
-import { CreateUserDTO } from "@/user/application/dtos/create_user.dto";
 import { EmptyException } from "@/shared/exceptions/empty.exception";
 import { MaxLengthException } from "@/shared/exceptions/max_length.exception";
 import { AlphabeticException } from "@/shared/exceptions/alphabetic.exception";

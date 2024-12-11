@@ -1,8 +1,8 @@
 import { IRequest } from "@/shared/dtos/request.dto";
 import { CreateUserDTO } from "../application/dtos/create_user.dto";
-import { RegisterUserLambdaAdapter } from "../infrastructure/adapters/register_user_lambda.adapter";
+import { RegisterUserLambdaAdapter } from "../infrastructure/input/adapters/register_user_lambda.adapter";
 import { RegisterUserCase } from "../application/use_cases/register_user.use_case";
-import { UserDynamoRepositoryAdapter } from "../infrastructure/adapters/user_dynamo_repository.adapter";
+import { UserDynamoRepositoryAdapter } from "../infrastructure/db/adapters/user_dynamo_repository.adapter";
 import { ArgonHashService } from "@/shared/services/argon_hash.service";
 
 const userRepository = new UserDynamoRepositoryAdapter({

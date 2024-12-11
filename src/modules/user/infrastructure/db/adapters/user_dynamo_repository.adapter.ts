@@ -1,5 +1,5 @@
-import { FindUserByEmailPort } from "../ports/find_user_by_email.port";
-import { SaveUserPort } from "../ports/save_user.port";
+import { FindUserByEmailPort } from "../db/ports/find_user_by_email.port";
+import { SaveUserPort } from "../db/ports/save_user.port";
 import {
   DynamoDBClient,
   PutItemCommand,
